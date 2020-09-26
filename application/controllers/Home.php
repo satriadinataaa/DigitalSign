@@ -15,6 +15,7 @@ class Home extends MY_Controller
         $this->data['wa'] = M_Whatsapp::first();
 	}
 
+ 
     public function test()
 	{
 		$phpWord = new PhpWord();
