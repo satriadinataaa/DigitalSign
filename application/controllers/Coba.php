@@ -42,18 +42,23 @@ class Coba extends MY_Controller
 
     public function verif()
     {
+        $hash = "iniHASHmd5";    
         $keyPair = KeyPair::generateKeyPair(4096);        
         $secretKey = $keyPair->getPrivateKey();
         $publicKey = $keyPair->getPublicKey();
         
-        $pk = KeyPair::setPublicKey($publicKey->getKey());        
-        echo $publicKey->getKey();
+        // $pk = KeyPair::setPublicKey($publicKey->getKey());
+        $c1 = EasyRSA::rsaEncryptPure($hash, $secretKey);        
+        $b1 = EasyRSA::encrypt2($hash, $secretKey);
+        $c2 = EasyRSA::rsaDecryptPure($c1, $publicKey);
+        $b2 = EasyRSA::decrypt2($b1, $publicKey);
+        echo $c2;
         echo '<br><br><br>';
-        echo var_dump($pk->getKey()); exit;
+        echo $b2; exit;
         // echo $pk->getPublicKey(); exit;
         //sign ttd 1
-        $hash = "iniHASHmd5";        
-        $sign1 = EasyRSA::encrypt2($hash, $secretKey);
+            
+        
 
         //verify
         $decrypt = EasyRSA::decrypt2($sign1, $publicKey->getKey());

@@ -301,6 +301,18 @@ class EasyRSA implements EasyRSAInterface
         return $rsa->encrypt($plaintext);
     }
 
+    public static function rsaEncryptPure($plaintext, PrivateKey $rsaPrivateKey)
+    {
+        $rsa = self::getRsa(RSA::ENCRYPTION_OAEP);
+
+        $return = $rsa->loadKey($rsaPrivateKey->getKey());
+        if ($return === false) {
+            throw new InvalidKeyException('Ecryption failed due to invalid key');
+        }
+
+        return Base64::encode($rsa->encrypt($plaintext));
+    }
+
     /**
      * Decrypt with RSAES-OAEP + MGF1+SHA256
      *
@@ -341,7 +353,22 @@ class EasyRSA implements EasyRSAInterface
         return $return;
     }
 
-    
+    public static function rsaDecryptPure($ciphertext, PublicKey $rsaPublicKey)
+    {
+        $ciphertext = Base64::decode($ciphertext);
+        $rsa = self::getRsa(RSA::ENCRYPTION_OAEP);
+
+        $return = $rsa->loadKey($rsaPublicKey->getKey());
+        if ($return === false) {
+            throw new InvalidKeyException('Decryption failed due to invalid key');
+        }
+
+        $return = @$rsa->decrypt($ciphertext);
+        if ($return === false) {
+            throw new InvalidCiphertextException('Decryption failed');
+        }
+        return $return;
+    }
 
     /**
      * Use an internally generated key in a Defuse context
