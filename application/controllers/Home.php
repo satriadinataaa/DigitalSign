@@ -42,6 +42,13 @@ class Home extends MY_Controller
             $secretKey = $keyPair->getPrivateKey();
             $publicKey = $keyPair->getPublicKey();
             //$publicKey->getKey(); <-- code to print key;
+            $string ="test";
+            $ciphertext = EasyRSA::encrypt2($string, $secretKey);
+           
+            $plaintext = EasyRSA::decrypt2($ciphertext, $publicKey);
+            echo $ciphertext;
+            echo "anjing";
+            echo $plaintext;die();
 
         }      
 

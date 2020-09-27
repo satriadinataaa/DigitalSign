@@ -22,7 +22,7 @@
             </div>
           </div>
 
-              <form>
+              <form method="POST" action="<?= base_url()?>Home/index">
                 <!--<div class="form-group">
                   <label for="exampleInputEmail1">Flag</label>
                   <input type="text" class="form-control" id="flag" name="flag" aria-describedby="emailHelp" placeholder="Enter Flag">

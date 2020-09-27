@@ -334,7 +334,7 @@ class EasyRSA implements EasyRSAInterface
             throw new InvalidKeyException('Decryption failed due to invalid key');
         }
 
-        $return = @$rsa->decrypt2($ciphertext);
+        $return = @$rsa->decrypt($ciphertext);
         if ($return === false) {
             throw new InvalidCiphertextException('Decryption failed');
         }
