@@ -72,14 +72,7 @@ class Home extends MY_Controller
 
         }      
 
-        if($this->POST('submitSec')){
-            //insert code here
-            $keyPair = KeyPair::generateKeyPair(2048);
-            $secretKey = $keyPair->getPrivateKey();
-            $publicKey = $keyPair->getPublicKey();
-
-            //$publicKey->getKey(); <-- code to print key;
-        }      
+   
 
         $this->data['title']  = 'Periksa Integritas';
         $this->data['content']   = 'check';

@@ -9,9 +9,9 @@
     <div class="col-md-3">
     
     </div>
-    <div class="col-md-6">    
+    <div class="col-md-6 bg-light rounded p-5">    
           
-              <form>
+              <form method="POST" action="<?= base_url()?>Home/check">
                 <!--<div class="form-group">
                   <label for="exampleInputEmail1">Flag</label>
                   <input type="text" class="form-control" id="flag" name="flag" aria-describedby="emailHelp" placeholder="Enter Flag">

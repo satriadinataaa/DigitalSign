@@ -6,13 +6,13 @@
 
 <div class="container mt-4">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 ">
           <p class="text-center">
             <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
               Penanda Tangan Pertama
             </a>
           </p>
-          <div class="collapse" id="collapseExample">
+          <div class="collapse bg-light rounded p-5" id="collapseExample">
           <div class="card bg-primary mb-3">
             <div class="card-body">
                 <div class="container text-white">
@@ -48,7 +48,7 @@
               Penanda Tangan Kedua
             </a>
           </p>
-          <div class="collapse" id="collapseExample2">
+          <div class="collapse bg-light rounded p-5" id="collapseExample2">
           <div class="card bg-success mb-3">
             <div class="card-body">
                 <div class="container text-white">
