@@ -1,21 +1,115 @@
 <?php
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Writer\Word2007;
+use ParagonIE\EasyRSA\KeyPair;
+
+use ParagonIE\EasyRSA\EasyRSA;
+
 class Home extends MY_Controller
 {
-    var $API ="";
+    private $p;
+    private $q,$n,$totient,$e,$d;
+    public $cipherteks;
+
+    
 	public function __construct()
 	{
 		parent::__construct();
-       // $this->API="https://api.kawalcorona.com/indonesia";
         $this->load->library('session');
         $this->module = 'home';
 
-        $this->load->model('M_Whatsapp');
-        $this->data['wa'] = M_Whatsapp::first();
+      
 	}
+    public function testRSA(){
+        $keyPair = KeyPair::generateKeyPair(4096);
+        $secretKey = $keyPair->getPrivateKey();
+        $publicKey = $keyPair->getPublicKey();
+        $message = "test";
+        $ciphertext = EasyRSA::encrypt($message, $publicKey);
+        echo $ciphertext;
+        $plaintext = EasyRSA::decrypt($ciphertext, $secretKey);
+        echo $plaintext;
 
- 
+
+    }
+    public function index()
+	{
+       
+        if($this->POST('submitFirst')){
+            //insert code here
+        }      
+
+        if($this->POST('submitSec')){
+            //insert code here
+        }      
+
+        $this->data['title']  = 'Beranda';
+        $this->data['content']   = 'beranda';
+        $this->template($this->data, $this->module);
+    }
+
+    /*function setP(){
+        $this->p = $this->generatePrime();
+    }
+    
+    function setQ(){
+        $this->q = $this->generatePrime();
+    }
+    
+    function primeCheck($number){ 
+        if ($number == 1) 
+        return 0; 
+        for ($i = 2; $i <= $number/2; $i++){ 
+            if ($number % $i == 0) 
+                return 0; 
+        } 
+        return 1; 
+    } 
+
+    function generatePrime(){
+        do{
+            $number = mt_rand(1000,10000000);
+            $flag= $this->primeCheck($number);
+        }
+        while($flag != 1);
+
+        return $number;
+    }
+
+    function getPublickey(){
+        $this->e = $this->generatePrime();
+    }
+
+    function calculateN(){
+        $this->setP();
+        $this->setQ();
+      
+        $n = $this->p*$this->q;
+        echo $n;         
+    }
+
+    function getTotient(){
+        $p = $this->p - 1;
+        $q = $this->q - 1;
+        $this->totient = $p * $q;
+    }
+
+    function gcd(){
+        $e = $this->e;
+        $totient = $this->totient;
+        if($e<$totient){
+            $temp = $e;
+            $e = $totient;
+            $totient = $temp;
+        }
+        while($totient != 0){
+            $r = $e % $totient;
+            $e = $totient;
+            $totient = $r;
+        }
+        return $e;
+    }
+	
     public function test()
 	{
 		$phpWord = new PhpWord();
@@ -31,31 +125,7 @@ class Home extends MY_Controller
 		header('Cache-Control: max-age=0');
 		
 		$writer->save('php://output');
-	}
+	}*/
 
-	public function index()
-	{
-        $this->load->model('M_Carousel');
-        $this->load->model('M_KataMutiara');
-        $this->load->model('M_Berita');
-        $this->load->model('M_Marquee');
-        $this->data['carousel'] = M_Carousel::Orderby('id','desc')->limit(1)->first();
-        if($this->data['carousel']){
-        $this->data['carouselsamping'] = M_Carousel::where('id','!=',$this->data['carousel']->id)->Orderby('id','desc')->get();
-        }
-        else{
-            $this->data['carouselsamping'] = null;
-        }
-        $this->data['katamutiara'] = M_KataMutiara::Orderby('id','desc')->limit(1)->first();
-        //$this->data['katamutiara'] = $data['mutiara'][0]->katamutiara;
-        
-        $this->data['berita'] = M_Berita::Orderby('id','desc')->limit(4)->get();
-        $this->data['marquee'] = M_Marquee::first();
-        $this->data['title']  = 'Beranda';
-        $this->data['content']   = 'beranda';
-        $this->template($this->data, $this->module);
-    }
-
-    
 
 }

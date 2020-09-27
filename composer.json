@@ -16,7 +16,8 @@
 		"illuminate/database" : "5.0.28",
 		"illuminate/events"	: "5.0.28",
 		"fzaninotto/faker": "^1.8",
-		"phpoffice/phpword": "^0.17.0"
+		"phpoffice/phpword": "^0.17.0",
+		"paragonie/easyrsa": "^0.5.2"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
