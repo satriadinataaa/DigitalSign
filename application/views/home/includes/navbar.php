@@ -1,3 +1,4 @@
+<body style="background-image:url(<?= base_url()?>assets/bg.jpg)">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid p-3">
     <div class="navbar-header">
