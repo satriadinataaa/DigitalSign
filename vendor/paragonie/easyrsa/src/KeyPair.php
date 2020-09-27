@@ -55,4 +55,8 @@ class KeyPair
     {
         return $this->privateKey;
     }
+
+    public static function setPublicKey($publicKey) {
+        return new PublicKey($publicKey);
+    }
 }
