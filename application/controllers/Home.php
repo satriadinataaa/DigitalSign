@@ -21,9 +21,10 @@ class Home extends MY_Controller
       
 	}
     public function testRSA(){
-        $keyPair = KeyPair::generateKeyPair(4096);
+        $keyPair = KeyPair::generateKeyPair(2048);
         $secretKey = $keyPair->getPrivateKey();
         $publicKey = $keyPair->getPublicKey();
+
         $message = "test";
         $ciphertext = EasyRSA::encrypt($message, $publicKey);
         echo $ciphertext;
@@ -37,10 +38,20 @@ class Home extends MY_Controller
        
         if($this->POST('submitFirst')){
             //insert code here
+            $keyPair = KeyPair::generateKeyPair(2048);
+            $secretKey = $keyPair->getPrivateKey();
+            $publicKey = $keyPair->getPublicKey();
+            //$publicKey->getKey(); <-- code to print key;
+
         }      
 
         if($this->POST('submitSec')){
             //insert code here
+            $keyPair = KeyPair::generateKeyPair(2048);
+            $secretKey = $keyPair->getPrivateKey();
+            $publicKey = $keyPair->getPublicKey();
+
+            //$publicKey->getKey(); <-- code to print key;
         }      
 
         $this->data['title']  = 'Beranda';
@@ -48,6 +59,33 @@ class Home extends MY_Controller
         $this->template($this->data, $this->module);
     }
 
+    public function check()
+	{
+       
+        if($this->POST('submitFirst')){
+            //insert code here
+            $keyPair = KeyPair::generateKeyPair(2048);
+            $secretKey = $keyPair->getPrivateKey();
+            $publicKey = $keyPair->getPublicKey();
+            //$publicKey->getKey(); <-- code to print key;
+
+        }      
+
+        if($this->POST('submitSec')){
+            //insert code here
+            $keyPair = KeyPair::generateKeyPair(2048);
+            $secretKey = $keyPair->getPrivateKey();
+            $publicKey = $keyPair->getPublicKey();
+
+            //$publicKey->getKey(); <-- code to print key;
+        }      
+
+        $this->data['title']  = 'Periksa Integritas';
+        $this->data['content']   = 'check';
+        $this->template($this->data, $this->module);
+    }
+
+    
     /*function setP(){
         $this->p = $this->generatePrime();
     }

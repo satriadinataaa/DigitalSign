@@ -14,11 +14,11 @@
           </p>
           <div class="collapse" id="collapseExample">
               <form>
-                <div class="form-group">
+                <!--<div class="form-group">
                   <label for="exampleInputEmail1">Flag</label>
                   <input type="text" class="form-control" id="flag" name="flag" aria-describedby="emailHelp" placeholder="Enter Flag">
                   <small id="emailHelp" class="form-text text-muted">Penanda Tanda Tangan Digital Anda</small>
-                </div>
+                </div>-->
                 <div class="form-group">
                   <label for="exampleInputPassword1">File</label>
                   <input type="file" class="form-control" id="file" name="inputFile" placeholder="File">
@@ -35,17 +35,19 @@
             </a>
           </p>
           <div class="collapse" id="collapseExample2">
-              <form>
-                <div class="form-group">
+              <form method="POST" action="<?= base_url()?>Home/index">
+                <!--<div class="form-group">
                   <label for="exampleInputEmail1">Flag</label>
                   <input type="text" class="form-control" id="flag2" name="flag2" aria-describedby="emailHelp" placeholder="Enter Flag">
                   <small id="emailHelp" class="form-text text-muted">Penanda Tanda Tangan Digital Anda</small>
-                </div>
+                </div>-->
                 <div class="form-group">
                   <label for="exampleInputPassword1">Last Signature</label>
                   <input type="text" class="form-control" id="signature" name="lastSignature" placeholder="Signature Sebelumnya">
                 </div>
-                <input type="submit" name="submitSec" class="btn btn-primary">
+                <div class="form-group">
+                  <input type="submit" name="submitSec" class="btn btn-primary">
+                </div>
               </form>
           </div>
     </div>
