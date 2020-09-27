@@ -106,7 +106,7 @@ class EasyRSA implements EasyRSAInterface
         $random_key = random_bytes(32);
 
         // Use RSA to encrypt the random key
-        $rsaOut = self::rsaEncrypt($random_key,$rsaPrivateKey);
+        $rsaOut = self::rsaEncrypt2($random_key,$rsaPrivateKey);
 
         // Generate a symmetric key from the RSA output and plaintext
         $symmetricKey = hash_hmac(
@@ -284,6 +284,8 @@ class EasyRSA implements EasyRSAInterface
         }
         return $return;
     }
+
+    
 
     /**
      * Use an internally generated key in a Defuse context
