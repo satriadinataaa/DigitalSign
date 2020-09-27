@@ -190,6 +190,46 @@ class EasyRSA implements EasyRSAInterface
         );
     }
 
+
+    public static function decrypt2($ciphertext, PublicKey $rsaPublicKey)
+    {
+        $split = explode(self::SEPARATOR, $ciphertext);
+        if (\count($split) !== 4) {
+            throw new InvalidCiphertextException('Invalid ciphertext message');
+        }
+        if (!\hash_equals($split[0], self::VERSION_TAG)) {
+            throw new InvalidCiphertextException('Invalid version tag');
+        }
+        $checksum = \substr(
+            \hash('sha256', implode('$', array_slice($split, 0, 3))),
+            0,
+            16
+        );
+        if (!\hash_equals($split[3], $checksum)) {
+            throw new InvalidChecksumException('Invalid checksum');
+        }
+
+        $rsaCipher = Base64::decode($split[1]);
+        $rsaPlain = self::rsaDecrypt2(
+            $rsaCipher,
+            $rsaPublicKey
+        );
+        $symmetricKey = hash_hmac(
+            'sha256',
+            $rsaCipher,
+            $rsaPlain,
+            true
+        );
+
+        $key = self::defuseKey($symmetricKey);
+        return Crypto::decrypt(
+            Base64::decode($split[2]),
+            $key,
+            true
+        );
+    }
+
+
     /**
      * Sign with RSASS-PSS + MGF1+SHA256
      *
@@ -279,6 +319,22 @@ class EasyRSA implements EasyRSAInterface
         }
 
         $return = @$rsa->decrypt($ciphertext);
+        if ($return === false) {
+            throw new InvalidCiphertextException('Decryption failed');
+        }
+        return $return;
+    }
+
+    protected static function rsaDecrypt2($ciphertext, PublicKey $rsaPublicKey)
+    {
+        $rsa = self::getRsa(RSA::ENCRYPTION_OAEP);
+
+        $return = $rsa->loadKey($rsaPublicKey->getKey());
+        if ($return === false) {
+            throw new InvalidKeyException('Decryption failed due to invalid key');
+        }
+
+        $return = @$rsa->decrypt2($ciphertext);
         if ($return === false) {
             throw new InvalidCiphertextException('Decryption failed');
         }
