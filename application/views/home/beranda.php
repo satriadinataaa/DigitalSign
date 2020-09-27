@@ -13,6 +13,15 @@
             </a>
           </p>
           <div class="collapse" id="collapseExample">
+          <div class="card bg-primary mb-5">
+            <div class="card-body">
+                <div class="container text-white">
+                <p class="badge badge-warning p-2">Cara Menggunakan:</p>
+
+                </div>
+            </div>
+          </div>
+
               <form>
                 <!--<div class="form-group">
                   <label for="exampleInputEmail1">Flag</label>
@@ -35,6 +44,7 @@
             </a>
           </p>
           <div class="collapse" id="collapseExample2">
+          
               <form method="POST" action="<?= base_url()?>Home/index">
                 <!--<div class="form-group">
                   <label for="exampleInputEmail1">Flag</label>

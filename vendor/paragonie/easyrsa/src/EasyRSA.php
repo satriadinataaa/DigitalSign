@@ -100,6 +100,48 @@ class EasyRSA implements EasyRSAInterface
         return $packaged . self::SEPARATOR . $checksum;
     }
 
+    public static function encrypt2($plaintext, PrivateKey $rsaPrivateKey)
+    {
+        // Random encryption key
+        $random_key = random_bytes(32);
+
+        // Use RSA to encrypt the random key
+        $rsaOut = self::rsaEncrypt($random_key,$rsaPrivateKey);
+
+        // Generate a symmetric key from the RSA output and plaintext
+        $symmetricKey = hash_hmac(
+            'sha256',
+            $rsaOut,
+            $random_key,
+            true
+        );
+        $ephemeral = self::defuseKey(
+            $symmetricKey
+        );
+
+        // Now we encrypt the actual message
+        $symmetric = Base64::encode(
+            Crypto::encrypt($plaintext, $ephemeral, true)
+        );
+
+        $packaged = \implode(self::SEPARATOR,
+            array(
+                self::VERSION_TAG,
+                Base64::encode($rsaOut),
+                $symmetric
+            )
+        );
+
+        $checksum = \substr(
+            \hash('sha256', $packaged),
+            0,
+            16
+        );
+
+        // Return the ciphertext
+        return $packaged . self::SEPARATOR . $checksum;
+    }
+
     /**
      * KEM+DEM approach to RSA encryption.
      *
@@ -200,6 +242,18 @@ class EasyRSA implements EasyRSAInterface
         $rsa = self::getRsa(RSA::ENCRYPTION_OAEP);
 
         $return = $rsa->loadKey($rsaPublicKey->getKey());
+        if ($return === false) {
+            throw new InvalidKeyException('Ecryption failed due to invalid key');
+        }
+
+        return $rsa->encrypt($plaintext);
+    }
+
+    protected static function rsaEncrypt2($plaintext, PrivateKey $rsaPrivateKey)
+    {
+        $rsa = self::getRsa(RSA::ENCRYPTION_OAEP);
+
+        $return = $rsa->loadKey($rsaPrivateKey->getKey());
         if ($return === false) {
             throw new InvalidKeyException('Ecryption failed due to invalid key');
         }
