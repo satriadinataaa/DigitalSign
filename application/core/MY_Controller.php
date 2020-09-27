@@ -41,20 +41,20 @@ class MY_Controller extends CI_Controller
 		return $this->session->set_flashdata($name, '<div class="alert alert-'.$type.' alert-dismissable"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>'.$msg.'</div>');
 	}
 
-	protected function upload($id, $directory, $tag_name = 'userfile', $max_size = 0)
+	protected function upload($name, $directory, $tag_name = 'userfile', $max_size = 0)
 	{
 		if ( isset( $_FILES[$tag_name] ) && !empty( $_FILES[$tag_name]['name'] ) )
 		{
-			$upload_path = realpath(FCPATH . 'assets/' . $directory . '/');
-			@unlink($upload_path . '/' . $id . '.jpg');
+			$upload_path = realpath(FCPATH . '/' . $directory . '/');			
+			// @unlink($upload_path . '/' . $id . '.jpg');
 			$config = [
-				'file_name' 		=> $id . '.jpg',
-				'allowed_types'		=> 'jpg|png|bmp|jpeg',
+				'file_name' 		=> $name,
+				'allowed_types'		=> 'pdf|xlsx|docx|doc|xls|jpg',
 				'upload_path'		=> $upload_path,
 				'max_size'			=> $max_size
 			];
 			$this->load->library('upload');
-			$this->upload->initialize($config);
+			$this->upload->initialize($config);			
 			return $this->upload->do_upload($tag_name);
 		}
 		return FALSE;

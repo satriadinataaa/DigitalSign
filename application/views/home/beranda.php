@@ -27,7 +27,7 @@
             </div>
           </div>
 
-              <form method="POST" action="<?= base_url()?>Home/index">
+              <form method="POST" action="<?= base_url()?>DigitalSignature/sign_first" enctype="multipart/form-data">
                 <!--<div class="form-group">
                   <label for="exampleInputEmail1">Flag</label>
                   <input type="text" class="form-control" id="flag" name="flag" aria-describedby="emailHelp" placeholder="Enter Flag">
