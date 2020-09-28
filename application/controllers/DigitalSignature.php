@@ -95,7 +95,17 @@ class DigitalSignature extends MY_Controller
             $berkas = $_FILES['berkas']['tmp_name'];
             $sign = $_FILES['sign']['tmp_name'];
             $check = $this->verif_sign($berkas, $sign);
-            echo var_dump($check);            
+            if($check == true){
+                $this->data['stat'] = "success";
+                $this->data['msg'] = "Proses Verifikasi Sukses. Integritas File Terjamin.";
+            }
+            else{
+                $this->data['stat'] = "danger";
+                $this->data['msg'] = "Proses Verifikasi Gagal. Integritas File Tidak Terjamin.";
+            }    
+            $this->data['title']  = 'Hasil Verifikasi';
+            $this->data['content']   = 'postverif';
+            $this->template($this->data, $this->module);                  
             return;
         }
         return show_404();

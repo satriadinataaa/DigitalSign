@@ -9,7 +9,7 @@
     <div class="col-md-6 ">
           <p class="text-center">
             <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-              Penanda Tangan Pertama
+            <span class="fa fa-pencil"></span>  Penanda Tangan Pertama
             </a>
           </p>
           <div class="collapse bg-light rounded p-5" id="collapseExample">
@@ -45,7 +45,7 @@
     <div class="col-md-6">
           <p class="text-center">
             <a class="btn btn-success" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
-              Penanda Tangan Kedua
+            <span class="fa fa-pencil"></span>&nbsp;Penanda Tangan Kedua
             </a>
           </p>
           <div class="collapse bg-light rounded p-5" id="collapseExample2">
