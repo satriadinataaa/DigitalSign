@@ -26,6 +26,7 @@ class DigitalSignature extends MY_Controller
         if($this->POST('submitFirst')) {
             $id = mt_rand(1,100);
             $file_name = $id . preg_replace('/\s+/', '_', $_FILES['inputFile']['name']);
+           
             if(!$this->upload($file_name, 'uploads', 'inputFile'))
                 return 'gagal';
             
@@ -38,7 +39,13 @@ class DigitalSignature extends MY_Controller
             $data['sign'] = $sign;
             $data['publicKey'][0] = $publicKey->getKey();
             $this->createExcel($file_name, $data);
-            echo 'sukses, baiknya redirect ke page yg munculin private sign dia, sama button donlod excel';
+            $this->data['pvtkey'] = $secretKey->getKey();
+            
+            
+            $this->data['title']  = 'Hasil Signature';
+            $this->data['content']   = 'postsign';
+            $this->template($this->data, $this->module);
+            //echo 'sukses, baiknya redirect ke page yg munculin private sign dia, sama button donlod excel';
             return;
         }
         
@@ -105,8 +112,9 @@ class DigitalSignature extends MY_Controller
         $file_name = explode('.', $file_name);
         array_pop($file_name);
         $file_name = implode('', $file_name);
+        $namafile = $file_name.'.xlsx';
         $file_name = dirname(__DIR__, 2).'/file/'.$file_name.'.xlsx';
-
+        
         \PhpOffice\PhpSpreadsheet\Shared\File::setUseUploadTempDirectory(true);
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -122,6 +130,8 @@ class DigitalSignature extends MY_Controller
 
         $writer = new Xlsx($spreadsheet);
         $writer->save($file_name);
+        $this->data['filename'] = $namafile;
+
     }
 
     protected function readExcel($file_name)
