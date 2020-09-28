@@ -79,7 +79,13 @@ class DigitalSignature extends MY_Controller
             $data['publicKey'][count($excel_data)-1] = $publicKey->getKey();
             // $this->dump($data['publicKey']); exit;
             $this->createExcel('Sign-'.count($excel_data).'-'.$file_name, $data);
-            echo 'sukses, baiknya redirect ke page yg munculin private sign dia, sama button donlod excel';
+            $this->data['pvtkey'] = $secretKey->getKey();
+            
+            
+            $this->data['title']  = 'Hasil Signature';
+            $this->data['content']   = 'postsign';
+            $this->template($this->data, $this->module);
+            //echo 'sukses, baiknya redirect ke page yg munculin private sign dia, sama button donlod excel';
             return;
         }
         
