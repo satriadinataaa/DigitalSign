@@ -11,7 +11,7 @@
     </div>
     <div class="col-md-6 bg-light rounded p-5">    
           
-              <form method="POST" action="<?= base_url()?>Home/check">
+              <form method="POST" action="<?= base_url()?>DigitalSignature/verify" enctype="multipart/form-data">
                 <!--<div class="form-group">
                   <label for="exampleInputEmail1">Flag</label>
                   <input type="text" class="form-control" id="flag" name="flag" aria-describedby="emailHelp" placeholder="Enter Flag">
@@ -19,11 +19,11 @@
                 </div>-->
                 <div class="form-group">
                   <label for="exampleInputPassword1">Berkas yang ingin diperiksa</label>
-                  <input type="file" class="form-control" id="file" name="inputFile" placeholder="File">
+                  <input type="file" class="form-control" id="file" name="berkas" placeholder="File">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputPassword1">Excel Signature</label>
-                  <input type="file" class="form-control" id="file" name="inputFile" placeholder="File">
+                  <input type="file" class="form-control" id="file" name="sign" placeholder="File">
                 </div>
                 <input type="submit" name="submitFirst" class="btn btn-primary">
               </form>
