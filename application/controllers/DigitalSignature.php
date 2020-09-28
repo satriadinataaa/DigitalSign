@@ -95,10 +95,17 @@ class DigitalSignature extends MY_Controller
             $hash = EasyRSA::rsaDecryptPure($sign, $public_key);
 
             if(strcmp($hash_file, $hash) == 0) {
-                echo 'valid';                
+                $this->data['stat'] = 'success';
+                $this->data['msg'] = "Proses Verifikasi Sukses. Integritas File Terjamin";
+                //echo 'valid';                
             } else {
-                echo 'tidak valid';
+                $this->data['stat']= 'danger';
+                $this->data['msg'] = "Proses Verifikasi Gagal. Integritas File Tidak Terjamin";
+                //echo 'tidak valid';
             }
+            $this->data['title']  = 'Hasil Verifikasi';
+            $this->data['content']   = 'postverif';
+            $this->template($this->data, $this->module);
             return;
         }
         return show_404();
