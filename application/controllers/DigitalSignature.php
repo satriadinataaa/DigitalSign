@@ -47,21 +47,31 @@ class DigitalSignature extends MY_Controller
 
     public function sign_next()
     {
-        if($this->POST('submitFirst')) {
+        if($this->POST('submitSec')) {
+            if(empty($_FILES['berkas']['name']) || empty($_FILES['sign']['name']))
+                echo 'woi';
+
+            $berkas_file = $_FILES['berkas']['tmp_name'];
+            $berkas_sign = $_FILES['sign']['tmp_name'];
+
             $id = mt_rand(1,100);
-            $file_name = $id . preg_replace('/\s+/', '_', $_FILES['inputFile']['name']);
-            if(!$this->upload($file_name, 'uploads', 'inputFile'))
-                return 'gagal';
+            $file_name = $id . preg_replace('/\s+/', '_', $_FILES['sign']['name']);            
             
-            $hash_file =  md5_file(base_url('uploads/'.$file_name));
+            $excel_data = $this->readExcel($berkas_sign);
+            
             $keyPair = KeyPair::generateKeyPair(4096);
             $secretKey = $keyPair->getPrivateKey();
             $publicKey = $keyPair->getPublicKey();
 
-            $sign = EasyRSA::rsaEncryptPure($hash_file, $secretKey); 
+            $sign = EasyRSA::rsaEncryptPure($excel_data[1][0], $secretKey); 
             $data['sign'] = $sign;
-            $data['publicKey'][0] = $publicKey->getKey();
-            $this->createExcel($file_name, $data);
+            $data['publicKey'] = [];
+            for($i=0; $i<count($excel_data)-1; $i++) {
+                $data['publicKey'][$i] = $excel_data[$i+1][1];
+            }
+            $data['publicKey'][count($excel_data)-1] = $publicKey->getKey();
+            // $this->dump($data['publicKey']); exit;
+            $this->createExcel('Sign-'.count($excel_data).'-'.$file_name, $data);
             echo 'sukses, baiknya redirect ke page yg munculin private sign dia, sama button donlod excel';
             return;
         }
@@ -75,26 +85,34 @@ class DigitalSignature extends MY_Controller
             if(empty($_FILES['berkas']['name']) || empty($_FILES['sign']['name']))
                 echo 'woi';
             
-            $hash_file = md5_file($_FILES['berkas']['tmp_name']);
-            $excal_data = $this->readExcel($_FILES['sign']['tmp_name']);
-            $sign = $excal_data[1][0];
-            
-            // $this->dump($list_sign); exit;
-            for($i=count($excal_data)-1; $i>1; $i--) {
-                $public_key = KeyPair::setPublicKey($excal_data[$i][1]);
-                $sign = EasyRSA::rsaDecryptPure($sign, $public_key);
-            }
-            $public_key = KeyPair::setPublicKey($excal_data[1][1]);
-            $hash = EasyRSA::rsaDecryptPure($sign, $public_key);
-
-            if(strcmp($hash_file, $hash) == 0) {
-                echo 'valid';                
-            } else {
-                echo 'tidak valid';
-            }
+            $berkas = $_FILES['berkas']['tmp_name'];
+            $sign = $_FILES['sign']['tmp_name'];
+            $check = $this->verif_sign($berkas, $sign);
+            echo var_dump($check);            
             return;
         }
         return show_404();
+    }
+
+    protected function verif_sign($berkas, $sign)
+    {
+        $hash_file = md5_file($berkas);
+        $excel_data = $this->readExcel($sign);
+        $sign = $excel_data[1][0];
+        
+        // $this->dump($list_sign); exit;
+        for($i=count($excel_data)-1; $i>1; $i--) {
+            $public_key = KeyPair::setPublicKey($excel_data[$i][1]);
+            $sign = EasyRSA::rsaDecryptPure($sign, $public_key);
+        }
+        $public_key = KeyPair::setPublicKey($excel_data[1][1]);
+        $hash = EasyRSA::rsaDecryptPure($sign, $public_key);
+
+        if(strcmp($hash_file, $hash) == 0) {
+            return true;              
+        } else {
+            return false;
+        }
     }
 
     protected function createExcel($file_name, $data)
