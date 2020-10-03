@@ -24,69 +24,74 @@ class DigitalSignature extends MY_Controller
     public function sign_first()
     {
         if($this->POST('submitFirst')) {
-            $id = mt_rand(1,100);
-            $file_name = $id . preg_replace('/\s+/', '_', $_FILES['inputFile']['name']);
-           
-            if(!$this->upload($file_name, 'uploads', 'inputFile'))
-                return 'gagal';
-            
-            $hash_file =  md5_file(base_url('uploads/'.$file_name));
-            $keyPair = KeyPair::generateKeyPair(4096);
-            $secretKey = $keyPair->getPrivateKey();
-            $publicKey = $keyPair->getPublicKey();
+            try {
+                $berkas_file = $_FILES['inputFile']['tmp_name'];
+                if(empty($berkas_file))
+                    throw new Exception("Error Processing Request", 1);
 
-            $sign = EasyRSA::rsaEncryptPure($hash_file, $secretKey); 
-            $data['sign'] = $sign;
-            $data['publicKey'][0] = $publicKey->getKey();
-            $this->createExcel($file_name, $data);
-            $this->data['pvtkey'] = $secretKey->getKey();
-            
-            
-            $this->data['title']  = 'Hasil Signature';
-            $this->data['content']   = 'postsign';
-            $this->template($this->data, $this->module);
-            //echo 'sukses, baiknya redirect ke page yg munculin private sign dia, sama button donlod excel';
-            return;
+                $id = mt_rand(1,100);
+                $file_name = $id . preg_replace('/\s+/', '_', $_FILES['inputFile']['name']);
+
+                $hash_file =  md5_file($berkas_file);
+                $keyPair = KeyPair::generateKeyPair(4096);
+                $secretKey = $keyPair->getPrivateKey();
+                $publicKey = $keyPair->getPublicKey();
+
+                $sign = EasyRSA::rsaEncryptPure($hash_file, $secretKey); 
+                $data['sign'] = $sign;
+                $data['publicKey'][0] = $publicKey->getKey();
+                $this->createExcel('Sign-1-'.$file_name, $data);
+                $this->data['pvtkey'] = $secretKey->getKey();
+                                
+                $this->data['title']  = 'Hasil Signature';
+                $this->data['content']   = 'postsign';
+                return $this->template($this->data, $this->module);
+            } catch (Exception $e) {
+                $this->flashmsg("Pastikan input file dengan benar.", "danger");
+                return redirect('/');
+            }
         }
-        
+                
         return show_404();
     }
 
     public function sign_next()
     {
         if($this->POST('submitSec')) {
-            if(empty($_FILES['berkas']['name']) || empty($_FILES['sign']['name']))
-                echo 'woi';
+            try {
+                $berkas_file = $_FILES['berkas']['tmp_name'];
+                $berkas_sign = $_FILES['sign']['tmp_name'];
+                if(empty($berkas_file) || empty($berkas_sign))
+                    throw new Exception("Error Processing Request", 1);
 
-            $berkas_file = $_FILES['berkas']['tmp_name'];
-            $berkas_sign = $_FILES['sign']['tmp_name'];
+                $id = mt_rand(1,100);
+                $file_name = $id . preg_replace('/\s+/', '_', $_FILES['sign']['name']);            
+                
+                $excel_data = $this->readExcel($berkas_sign);
+                
+                $keyPair = KeyPair::generateKeyPair(4096);
+                $secretKey = $keyPair->getPrivateKey();
+                $publicKey = $keyPair->getPublicKey();
 
-            $id = mt_rand(1,100);
-            $file_name = $id . preg_replace('/\s+/', '_', $_FILES['sign']['name']);            
-            
-            $excel_data = $this->readExcel($berkas_sign);
-            
-            $keyPair = KeyPair::generateKeyPair(4096);
-            $secretKey = $keyPair->getPrivateKey();
-            $publicKey = $keyPair->getPublicKey();
-
-            $sign = EasyRSA::rsaEncryptPure($excel_data[1][0], $secretKey); 
-            $data['sign'] = $sign;
-            $data['publicKey'] = [];
-            for($i=0; $i<count($excel_data)-1; $i++) {
-                $data['publicKey'][$i] = $excel_data[$i+1][1];
+                $sign = EasyRSA::rsaEncryptPure($excel_data[1][0], $secretKey); 
+                $data['sign'] = $sign;
+                $data['publicKey'] = [];
+                for($i=0; $i<count($excel_data)-1; $i++) {
+                    $data['publicKey'][$i] = $excel_data[$i+1][1];
+                }
+                $data['publicKey'][count($excel_data)-1] = $publicKey->getKey();
+                // $this->dump($data['publicKey']); exit;
+                $this->createExcel('Sign-'.count($excel_data).'-'.$file_name, $data);
+                $this->data['pvtkey'] = $secretKey->getKey();
+                
+                
+                $this->data['title']  = 'Hasil Signature';
+                $this->data['content']   = 'postsign';
+                return $this->template($this->data, $this->module);
+            } catch (Exception $e) {
+                $this->flashmsg("Pastikan input file dengan benar.", "danger");
+                return redirect('/');
             }
-            $data['publicKey'][count($excel_data)-1] = $publicKey->getKey();
-            // $this->dump($data['publicKey']); exit;
-            $this->createExcel('Sign-'.count($excel_data).'-'.$file_name, $data);
-            $this->data['pvtkey'] = $secretKey->getKey();
-            
-            
-            $this->data['title']  = 'Hasil Signature';
-            $this->data['content']   = 'postsign';
-            $this->template($this->data, $this->module);
-            //echo 'sukses, baiknya redirect ke page yg munculin private sign dia, sama button donlod excel';
-            return;
         }
         
         return show_404();
@@ -95,24 +100,28 @@ class DigitalSignature extends MY_Controller
     public function verify()
     {
         if($this->POST('submitFirst')) {
-            if(empty($_FILES['berkas']['name']) || empty($_FILES['sign']['name']))
-                echo 'woi';
-            
-            $berkas = $_FILES['berkas']['tmp_name'];
-            $sign = $_FILES['sign']['tmp_name'];
-            $check = $this->verif_sign($berkas, $sign);
-            if($check == true){
-                $this->data['stat'] = "success";
-                $this->data['msg'] = "Proses Verifikasi Sukses. Integritas File Terjamin.";
+            try {
+                $berkas = $_FILES['berkas']['tmp_name'];
+                $sign = $_FILES['sign']['tmp_name'];
+                if(empty($berkas_file) || empty($berkas_sign))
+                    throw new Exception("Error Processing Request", 1);
+                    
+                $check = $this->verif_sign($berkas, $sign);
+                if($check == true){
+                    $this->data['stat'] = "success";
+                    $this->data['msg'] = "Proses Verifikasi Sukses. Integritas File Terjamin.";
+                }
+                else{
+                    $this->data['stat'] = "danger";
+                    $this->data['msg'] = "Proses Verifikasi Gagal. Integritas File Tidak Terjamin.";
+                }    
+                $this->data['title']  = 'Hasil Verifikasi';
+                $this->data['content']   = 'postverif';
+                return $this->template($this->data, $this->module);                  
+            } catch (Exception $e) {
+                $this->flashmsg("Pastikan input file dengan benar.", "danger");
+                return redirect('/');
             }
-            else{
-                $this->data['stat'] = "danger";
-                $this->data['msg'] = "Proses Verifikasi Gagal. Integritas File Tidak Terjamin.";
-            }    
-            $this->data['title']  = 'Hasil Verifikasi';
-            $this->data['content']   = 'postverif';
-            $this->template($this->data, $this->module);                  
-            return;
         }
         return show_404();
     }

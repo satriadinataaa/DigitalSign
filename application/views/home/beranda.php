@@ -2,6 +2,9 @@
 <div class="text-center">
 <h3>Tanda Tangani Berkas</h3>
 </div>
+<?php if(isset($_SESSION['msg'])) { 
+  echo $_SESSION['msg'];
+} ?>
 </div>
 
 <div class="container mt-4">

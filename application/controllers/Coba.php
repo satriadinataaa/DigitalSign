@@ -93,5 +93,13 @@ class Coba extends MY_Controller
         //     echo 'Tidak valid';
         // }
     }
-  
+    
+    public function coba()
+    {
+        if(isset($b))
+            echo 'ada';
+        else {
+            echo 'tidak';
+        }
+    }
 }
