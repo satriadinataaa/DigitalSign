@@ -101,13 +101,15 @@ class DigitalSignature extends MY_Controller
     {
         if($this->POST('submitFirst')) {
             try {
-                $berkas = $_FILES['berkas']['tmp_name'];
-                $sign = $_FILES['sign']['tmp_name'];
+                $berkas_file = $_FILES['berkas']['tmp_name'];
+                $berkas_sign = $_FILES['sign']['tmp_name'];
+               
                 if(empty($berkas_file) || empty($berkas_sign))
-                    throw new Exception("Error Processing Request", 1);
+                   throw new Exception("Error Processing Request", 1);
                     
-                $check = $this->verif_sign($berkas, $sign);
-                if($check == true){
+                $check = $this->verif_sign($berkas_file, $berkas_sign);
+                
+                if($check == 1){
                     $this->data['stat'] = "success";
                     $this->data['msg'] = "Proses Verifikasi Sukses. Integritas File Terjamin.";
                 }
