@@ -29,7 +29,7 @@ class DigitalSignature extends MY_Controller
                 if(empty($berkas_file))
                     throw new Exception("Error Processing Request", 1);
 
-                $id = mt_rand(1,100);
+                $id = mt_rand(1,200);
                 $file_name = $id . preg_replace('/\s+/', '_', $_FILES['inputFile']['name']);
 
                 $hash_file =  md5_file($berkas_file);
@@ -40,7 +40,7 @@ class DigitalSignature extends MY_Controller
                 $sign = EasyRSA::rsaEncryptPure($hash_file, $secretKey); 
                 $data['sign'] = $sign;
                 $data['publicKey'][0] = $publicKey->getKey();
-                $this->createExcel('Sign-1-'.$file_name, $data);
+                $this->createExcel('Sign-'.date('d-m-Y').'-'.$file_name, $data);
                 $this->data['pvtkey'] = $secretKey->getKey();
                                 
                 $this->data['title']  = 'Hasil Signature';
@@ -97,18 +97,19 @@ class DigitalSignature extends MY_Controller
         return show_404();
     }
 
-    public function verify()
+    public function validasi()
     {
-        if($this->POST('submitFirst')) {
+        // $this->dump($_FILES); exit;
+        if($this->POST('submitSec')) {
             try {
                 $berkas_file = $_FILES['berkas']['tmp_name'];
-                $berkas_sign = $_FILES['sign']['tmp_name'];
+                $berkas_sign = $_FILES['sign'];
                
-                if(empty($berkas_file) || empty($berkas_sign))
-                   throw new Exception("Error Processing Request", 1);
+                // if(empty($berkas_file) || empty($berkas_sign))
+                //    throw new Exception("Error Processing Request", 1);
                     
                 $check = $this->verif_sign($berkas_file, $berkas_sign);
-                
+                // $this->dump($check); exit;
                 if($check == 1){
                     $this->data['stat'] = "success";
                     $this->data['msg'] = "Proses Verifikasi Sukses. Integritas File Terjamin.";
@@ -128,25 +129,24 @@ class DigitalSignature extends MY_Controller
         return show_404();
     }
 
-    protected function verif_sign($berkas, $sign)
+    protected function verif_sign($berkas, $berkas_sign)
     {
         $hash_file = md5_file($berkas);
-        $excel_data = $this->readExcel($sign);
-        $sign = $excel_data[1][0];
         
-        // $this->dump($list_sign); exit;
-        for($i=count($excel_data)-1; $i>1; $i--) {
-            $public_key = KeyPair::setPublicKey($excel_data[$i][1]);
-            $sign = EasyRSA::rsaDecryptPure($sign, $public_key);
+        for($i=0; $i<count($berkas_sign['tmp_name']); $i++) {
+            $excel_data = $this->readExcel($berkas_sign['tmp_name'][$i]);    
+            // $this->dump($excel_data); exit;
+            $sign = $excel_data[1][0];
+            $public_key = KeyPair::setPublicKey($excel_data[1][1]);
+            $hash = EasyRSA::rsaDecryptPure($sign, $public_key);
+            if(strcmp($hash_file, $hash) == 0) {
+                            
+            } else {
+                return false;
+            }
         }
-        $public_key = KeyPair::setPublicKey($excel_data[1][1]);
-        $hash = EasyRSA::rsaDecryptPure($sign, $public_key);
 
-        if(strcmp($hash_file, $hash) == 0) {
-            return true;              
-        } else {
-            return false;
-        }
+        return true;
     }
 
     protected function createExcel($file_name, $data)
@@ -164,8 +164,8 @@ class DigitalSignature extends MY_Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sheet->getCell('A1')->setValue('Last Signature');
-        $sheet->getCell('B1')->setValue('List Public Key');
+        $sheet->getCell('A1')->setValue('Signature');
+        $sheet->getCell('B1')->setValue('Public Key');
         $sheet->getCell('A2')->setValue($data['sign']);
         //write sign and public key to excel
         for($i=0; $i<count($data['publicKey']); $i++) {

@@ -12,10 +12,10 @@
     <div class="col-md-6 ">
           <p class="text-center">
             <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-            <span class="fa fa-pencil"></span>  Penanda Tangan Pertama
+            <span class="fa fa-pencil"></span>  Buat Tanda Tangan
             </a>
           </p>
-          <div class="collapse bg-light rounded p-5" id="collapseExample">
+          <div class="bg-light rounded p-5" id="collapseExample">
           <div class="card bg-primary mb-3">
             <div class="card-body">
                 <div class="container text-white">
@@ -40,7 +40,7 @@
                   <label for="exampleInputPassword1">File</label>
                   <input type="file" class="form-control" id="file" name="inputFile" placeholder="File">
                 </div>
-                <input type="submit" name="submitFirst" class="btn btn-primary">
+                <input type="submit" value="Submit" name="submitFirst" class="btn btn-primary">
               </form>
           </div>
     </div>
@@ -48,10 +48,10 @@
     <div class="col-md-6">
           <p class="text-center">
             <a class="btn btn-success" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
-            <span class="fa fa-pencil"></span>&nbsp;Penanda Tangan Kedua
+            <span class="fa fa-pencil"></span>&nbsp;Validasi Tanda Tangan
             </a>
           </p>
-          <div class="collapse bg-light rounded p-5" id="collapseExample2">
+          <div class="bg-light rounded p-5" id="collapseExample2">
           <div class="card bg-success mb-3">
             <div class="card-body">
                 <div class="container text-white">
@@ -65,7 +65,7 @@
                 </div>
             </div>
           </div>
-              <form method="POST" action="<?= base_url()?>DigitalSignature/sign_next" enctype="multipart/form-data">
+              <form method="POST" action="<?= base_url()?>DigitalSignature/validasi" enctype="multipart/form-data">
                 <!--<div class="form-group">
                   <label for="exampleInputEmail1">Flag</label>
                   <input type="text" class="form-control" id="flag2" name="flag2" aria-describedby="emailHelp" placeholder="Enter Flag">
@@ -76,15 +76,19 @@
                   <input type="file" class="form-control" id="file" name="berkas" placeholder="File">
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputPassword1">File Excel</label>
-                  <input type="file" class="form-control" id="file" name="sign" placeholder="File">
+                  <label for="exampleInputPassword1">File Excel Tanda Tangan</label>
+                  <input type="file" class="form-control" id="file" name="sign[]" placeholder="File">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">File Excel Tanda Tangan</label>
+                  <input type="file" class="form-control" id="file" name="sign[]" placeholder="File">
                 </div>
                 <!--<div class="form-group">
                   <label for="exampleInputPassword1">Last Signature</label>
                   <input type="text" class="form-control" id="signature" name="lastSignature" placeholder="Signature Sebelumnya">
                 </div>-->
                 <div class="form-group">
-                  <input type="submit" name="submitSec" class="btn btn-success">
+                  <input type="submit" value="Submit" name="submitSec" class="btn btn-success">
                 </div>
               </form>
           </div>
