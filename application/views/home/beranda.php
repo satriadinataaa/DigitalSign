@@ -75,14 +75,23 @@
                   <label for="exampleInputPassword1">Berkas</label>
                   <input type="file" class="form-control" id="file" name="berkas" placeholder="File">
                 </div>
+                <div id="item-container"> 
+                <div class="row">
+                <div class="col-md-10">
                 <div class="form-group">
                   <label for="exampleInputPassword1">File Excel Tanda Tangan</label>
                   <input type="file" class="form-control" id="file" name="sign[]" placeholder="File">
                 </div>
-                <div class="form-group">
-                  <label for="exampleInputPassword1">File Excel Tanda Tangan</label>
-                  <input type="file" class="form-control" id="file" name="sign[]" placeholder="File">
                 </div>
+                <div class="col-md-2">
+                <div class="form-group">
+                <label for="exampleInputPassword1">&nbsp;</label>
+                 <button type="button" class="btn btn-primary form-control" onclick="add_item()">+</button>
+                </div>
+                </div>
+                </div>
+                </div>
+               
                 <!--<div class="form-group">
                   <label for="exampleInputPassword1">Last Signature</label>
                   <input type="text" class="form-control" id="signature" name="lastSignature" placeholder="Signature Sebelumnya">
@@ -97,3 +106,33 @@
   </div>
 
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script>
+function add_item() {
+           
+            $('#item-container').append(`
+            <div class="row">
+                <div class="col-md-10">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">File Excel Tanda Tangan</label>
+                  <input type="file" class="form-control" id="file" name="sign[]" placeholder="File">
+                </div>
+                </div>
+                <div class="col-md-2">
+                <div class="form-group">
+                <p>&nbsp</p>
+                <button type="button" class="btn btn-danger " onclick="remove_item(this)">-</button>
+                 <button type="button" class="btn btn-primary " onclick="add_item()">+</button>
+                </div>
+                </div>
+                </div>
+            `);
+}
+
+function remove_item(obj) {
+          
+            $(obj).parent().parent().parent().remove();
+           
+        }
+        
+        </script>
