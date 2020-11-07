@@ -1,6 +1,6 @@
 <div class ="container mt-5">
 <div class="text-center">
-<h3 class="text-<?= $stat ?>">Verifikasi</h3>
+<h3 class="text-<?= $stat ?>">Hasil Validasi</h3>
 </div>
 </div>
 
@@ -11,7 +11,8 @@
     </div>
     <div class="col-md-6 bg-light rounded p-5">    
     
-          <h4 class="text-center text-<?= $stat ?>"><?= $msg ?></h4>
+          <h4 class="text-center text-<?= $stat ?>"><?= $msg ?></h4><br>
+          <a class="btn btn-primary mb-5" href="<?= base_url()?>">Kembali ke beranda</a>
     </div>
 
     

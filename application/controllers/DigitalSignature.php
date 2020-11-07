@@ -112,13 +112,13 @@ class DigitalSignature extends MY_Controller
                 // $this->dump($check); exit;
                 if($check == 1){
                     $this->data['stat'] = "success";
-                    $this->data['msg'] = "Proses Verifikasi Sukses. Integritas File Terjamin.";
+                    $this->data['msg'] = "Proses Validasi Sukses. Integritas File Terjamin.";
                 }
                 else{
                     $this->data['stat'] = "danger";
-                    $this->data['msg'] = "Proses Verifikasi Gagal. Integritas File Tidak Terjamin.";
+                    $this->data['msg'] = "Proses Validasi Gagal. Integritas File Tidak Terjamin.";
                 }    
-                $this->data['title']  = 'Hasil Verifikasi';
+                $this->data['title']  = 'Hasil Validasi';
                 $this->data['content']   = 'postverif';
                 return $this->template($this->data, $this->module);                  
             } catch (Exception $e) {

@@ -1,6 +1,6 @@
 <div class ="container mt-5">
 <div class="text-center">
-<h3>Tanda Tangani Berkas</h3>
+<h3>Tanda Tangan Digital</h3>
 </div>
 <?php if(isset($_SESSION['msg'])) { 
   echo $_SESSION['msg'];
@@ -21,7 +21,7 @@
                 <div class="container text-white">
                 <h4>Cara Menggunakan:</h4>
                 <ul>
-                    <li>Jika Anda berperan sebagai penandatangan bukan pertama, beralih ke menu disamping</li>
+                    <!-- <li>Jika Anda berperan sebagai penandatangan bukan pertama, beralih ke menu disamping</li> -->
                     <li>Masukkan File Yang ingin diberikan Tanda Tangan Digital</li>
                     <li>Pastikan File Yang Anda Masukkan Telah Benar</li>
                     <li>Klik Tombol Submit</li>
@@ -48,7 +48,7 @@
     <div class="col-md-6">
           <p class="text-center">
             <a class="btn btn-success" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample2">
-            <span class="fa fa-pencil"></span>&nbsp;Validasi Tanda Tangan
+            <span class="fa fa-search"></span>&nbsp;Validasi Tanda Tangan
             </a>
           </p>
           <div class="bg-light rounded p-5" id="collapseExample2">
@@ -57,9 +57,12 @@
                 <div class="container text-white">
                 <h4>Cara Menggunakan:</h4>
                 <ul>
-                    <li>Jika Anda berperan sebagai penandatangan pertama, beralih ke menu disamping</li>
-                    <li>Masukkan Berkas dan File Excel yang berisikan Tandatangan digital penandatangan sebelumnya</li>
-
+                    <!-- <li>Jika Anda berperan sebagai penandatangan pertama, beralih ke menu disamping</li> -->
+                    <!-- <li>Masukkan Berkas dan File Excel yang berisikan Tandatangan digital penandatangan sebelumnya</li> -->
+                    <li>Masukkan File Yang Ingin Diperiksa Tanda Tangan Digital</li>
+                    <li>Masukan File Excel Tanda Tangan Yang Dikirim Oleh Penanda Tangan</li>
+                    <li>Jika Penanda Tangan Lebih Dari Satu, Klik Tombol "+"
+                    <li>Pastikan File Yang Anda Masukkan Telah Benar</li>
                     <li>Klik Tombol Submit</li>
                 </ul>  
                 </div>
@@ -77,13 +80,13 @@
                 </div>
                 <div id="item-container"> 
                 <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-9">
                 <div class="form-group">
-                  <label for="exampleInputPassword1">File Excel Tanda Tangan</label>
+                  <label for="exampleInputPassword1">File Excel Tanda Tangan 1</label>
                   <input type="file" class="form-control" id="file" name="sign[]" placeholder="File">
                 </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                 <div class="form-group">
                 <label for="exampleInputPassword1">&nbsp;</label>
                  <button type="button" class="btn btn-primary form-control" onclick="add_item()">+</button>
@@ -108,17 +111,18 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script>
+let i=2;
 function add_item() {
            
             $('#item-container').append(`
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-9">
                 <div class="form-group">
-                  <label for="exampleInputPassword1">File Excel Tanda Tangan</label>
+                  <label for="exampleInputPassword1">File Excel Tanda Tangan ${i++}</label>
                   <input type="file" class="form-control" id="file" name="sign[]" placeholder="File">
                 </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                 <div class="form-group">
                 <p>&nbsp</p>
                 <button type="button" class="btn btn-danger " onclick="remove_item(this)">-</button>
@@ -130,7 +134,7 @@ function add_item() {
 }
 
 function remove_item(obj) {
-          
+          i--;
             $(obj).parent().parent().parent().remove();
            
         }

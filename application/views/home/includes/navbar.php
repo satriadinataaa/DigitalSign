@@ -1,13 +1,13 @@
 <body style="background-image:url(<?= base_url()?>assets/bg.jpg)">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid p-3">
     <div class="navbar-header">
-      <a class="navbar-brand" href="<?= base_url()?>">Beri Tanda Tangan Digital</a>
+      <a class="navbar-brand" href="<?= base_url()?>">Beranda</a>
     </div>
    
-    <!-- <ul class="nav navbar-nav navbar-right">
+    <ul class="nav navbar-nav navbar-right">
       <li><a href="<?= base_url()?>Home/check" class=" btn btn-info"><span class="fa fa-search mr-3"></span>Periksa Integritas</a></li>
       
-    </ul> -->
+    </ul> 
   </div>
-</nav>
+</nav> -->
