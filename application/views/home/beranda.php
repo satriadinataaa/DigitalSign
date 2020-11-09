@@ -24,7 +24,7 @@
                     <!-- <li>Jika Anda berperan sebagai penandatangan bukan pertama, beralih ke menu disamping</li> -->
                     <li>Masukkan File Yang ingin diberikan Tanda Tangan Digital</li>
                     <li>Pastikan File Yang Anda Masukkan Telah Benar</li>
-                    <li>Klik Tombol Submit</li>
+                    <li>Klik Tombol "Buat Tanda Tangan"</li>
                 </ul>  
                 </div>
             </div>
@@ -37,10 +37,10 @@
                   <small id="emailHelp" class="form-text text-muted">Penanda Tanda Tangan Digital Anda</small>
                 </div>-->
                 <div class="form-group">
-                  <label for="exampleInputPassword1">File</label>
+                  <label for="exampleInputPassword1">Berkas</label>
                   <input type="file" class="form-control" id="file" name="inputFile" placeholder="File">
                 </div>
-                <input type="submit" value="Submit" name="submitFirst" class="btn btn-primary">
+                <input type="submit" value="Buat Tanda Tangan" name="submitFirst" class="btn btn-primary">
               </form>
           </div>
     </div>
@@ -63,7 +63,7 @@
                     <li>Masukan File Excel Tanda Tangan Yang Dikirim Oleh Penanda Tangan</li>
                     <li>Jika Penanda Tangan Lebih Dari Satu, Klik Tombol "+"
                     <li>Pastikan File Yang Anda Masukkan Telah Benar</li>
-                    <li>Klik Tombol Submit</li>
+                    <li>Klik Tombol Validasi</li>
                 </ul>  
                 </div>
             </div>
@@ -100,7 +100,7 @@
                   <input type="text" class="form-control" id="signature" name="lastSignature" placeholder="Signature Sebelumnya">
                 </div>-->
                 <div class="form-group">
-                  <input type="submit" value="Submit" name="submitSec" class="btn btn-success">
+                  <input type="submit" value="Validasi" name="submitSec" class="btn btn-success">
                 </div>
               </form>
           </div>
@@ -124,7 +124,7 @@ function add_item() {
                 </div>
                 <div class="col-md-3">
                 <div class="form-group">
-                <p>&nbsp</p>
+                <br>
                 <button type="button" class="btn btn-danger " onclick="remove_item(this)">-</button>
                  <button type="button" class="btn btn-primary " onclick="add_item()">+</button>
                 </div>
