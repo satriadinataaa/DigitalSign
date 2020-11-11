@@ -11,9 +11,14 @@
     </div>
     <div class="col-md-8 bg-light rounded p-3">    
     
-          <a class="btn btn-primary mb-5" href="<?= base_url()?>file/<?= $filename?>" download>Download Berkas Tanda Tangan Digital</a>
+          <a class="btn btn-success mb-5" href="<?= base_url()?>file/<?= $filename?>" download>Download Berkas Tanda Tangan Digital</a>&nbsp
+          <a class="btn btn-primary mb-5" href="<?= base_url()?>">Kembali ke beranda</a>
           <p>Private Key Anda :</p>
-          <p> <?= $pvtkey ?></p>
+          
+          <textarea cols="100%" rows="10"><?= $pvtkey ?></textarea>
+          
+          
+          
     </div>
     <div class="col-md-2">
     </div>
